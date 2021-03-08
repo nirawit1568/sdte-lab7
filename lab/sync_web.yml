@@ -1,6 +1,34 @@
-- hosts: web
+- hosts: host01
   tasks:
     - name: "copy website"
       copy:
         src: site/
         dest: /var/www/default
+
+- hosts: host02
+  tasks:
+    - name: "copy website"
+      copy:
+        src: site/
+        dest: /var/www/default
+    - name: "edit website"
+      become: yes
+      become_user: root
+      replace:
+        path: /var/www/default/index.html
+        regexp: "host01"
+        replace: "host02"
+
+- hosts: host03
+  tasks:
+    - name: "copy website"
+      copy:
+        src: site/
+        dest: /var/www/default
+    - name: "edit website"
+      become: yes
+      become_user: root
+      replace:
+        path: /var/www/default/index.html
+        regexp: "host01"
+        replace: "host03"
